@@ -5,14 +5,21 @@ __date__ = '20160131'
 import os
 import random
 import sys
+import webbrowser
+import time
+sys.path.append("libs")
 
-def clocks(duration):
-    #verse = open("verse.txt").readlines()          #this is old version for assume that the verse file is regular
-    verse=clearVerse("verse.txt")   #this is the new version which will clear the verse file every time
-    words = verse[int(len(verse)*random.random())]
-    command = "sleep "+ str(duration)+" && open /Applications/Safari.app http://www.getrelaxed.com/"
-    #command = "sleep "+ str(duration)+ " && say '"+words+"'"
-    os.system(command)
+def clocks(duration,commandNum):
+    if commandNum==1:
+        verse=clearVerse("verse.txt")   #this is the new version which will clear the verse file every time
+        words = verse[int(len(verse)*random.random())]
+        command = "sleep "+ str(duration)+ " && say '"+words+"'"
+        os.system(command)
+
+    if commandNum==2:
+        url='http://www.getrelaxed.com'
+        time.sleep(duration)
+        webbrowser.open(url)
 
 def clearVerse(verseaddress):
     try:
@@ -30,12 +37,28 @@ def clearVerse(verseaddress):
 
 
 if __name__ == '__main__':
-    if len(sys.argv)!=1:
+    if len(sys.argv)==3:    # if argv==3
+        try:
+            commandNum=0
+            if sys.argv[1]=='-p':
+                commandNum=1
+            elif sys.argv[1]=='-w':
+                commandNum=2
+            else:
+                raise NameError
+
+            duration = int(sys.argv[2])
+            clocks(duration,commandNum)
+        except:
+            print "error1, please enter it again"
+    elif len(sys.argv)==2:
         try:
             duration = int(sys.argv[1])
-            clocks(duration)
+            clocks(duration,2)
         except:
-            print "error, please enter it again"
+            print "error2, please enter it again"
+    elif len(sys.argv)==1:
+        clocks(3600,2)
     else:
-        clocks(3600)
+        print "error"
 
