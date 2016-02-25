@@ -18,7 +18,9 @@ def clocks(duration,commandNum):
 
     if commandNum==2:
         url='http://www.getrelaxed.com'
-        time.sleep(duration)
+        #time.sleep(duration)
+        command = "sleep "+str(duration)
+        os.system(command)
         webbrowser.open(url)
 
 def clearVerse(verseaddress):
